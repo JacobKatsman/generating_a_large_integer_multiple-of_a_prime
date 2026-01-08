@@ -2,7 +2,8 @@ module Main where
 import Numeric (showIntAtBase)
 import Data.Char (intToDigit)
 import Control.Monad.Random (evalRandIO, getRandomR)
---import Data.List (intercalate)
+import System.Exit (exitWith, exitFailure, exitSuccess)
+
 
 {-
   Этот скрипт получает большие целые числа которые делятся на
@@ -48,21 +49,30 @@ printFunction :: Integer -> Integer -> Integer -> IO ()
 printFunction i power1 randomNumber = do 
                let result = calcDivNumber power1 randomNumber
                putStrLn $ "N:" ++ show(i) ++ "number ::" ++ show (result) ++ "; binary :: " ++ binaryString result ++ " "
-                    
+               
+-- стандартная проверка входного параметра показателя на простоту               
+isPrime :: Integer -> Bool
+isPrime n
+    | n <= 1    = False
+    | n == 2    = True
+    | even n    = False
+    | otherwise = not (any (\d -> n `mod` d == 0) [3, 5 .. limit])
+    where limit = floor (sqrt (fromIntegral n))
+                 
 main :: IO ()
 main = do
     putStrLn "Генерация кратного простому числу большого целого числа"
     putStrLn "Введите простое число (2,3,5,7 или 11) это степень числа, по условию:"
     input <- getLine
     let power1 = read input :: Integer
-    -- цикл 
-    mapM_ (\i -> do
+    -- цикл
+    if (not (isPrime power1))
+    then  
+      putStrLn "показатель должен быть простым и положительным числом!"
+    else  
+      mapM_ (\i -> do
          randomNumber  <- loopFunction power1
-         if (power1  < 2) || (power1  > 11)
-         then
-          putStrLn $ "степень должна быть простым числом из списка и положительным числом!"
-         else 
-          printFunction i power1 randomNumber  -- игнорируем возвращаемое значение
+         printFunction i power1 randomNumber
          )[1..10]
     putStrLn "=== end ==="
    
