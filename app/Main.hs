@@ -24,7 +24,7 @@ customRange = RandomRange 1000 9999  -- диапазон случайных зн
 getRandomMonad ::IO Integer
 getRandomMonad = evalRandIO $ getRandomR ((randomMin customRange), (randomMax customRange))
 
---  вычислить случайное a число  для  (a ^ r - a)  где  a не делит r
+--  вычислить случайное a число  для  (a ^ r - a)  где  r не делит a
 calcDivNumber :: Integer -> Integer -> Integer
 calcDivNumber r base = 
                        let rs = base in
