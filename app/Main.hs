@@ -2,13 +2,13 @@ module Main where
 import Numeric (showIntAtBase)
 import Data.Char (intToDigit)
 import Control.Monad.Random (evalRandIO, getRandomR)
-import Data.List (intercalate)
+--import Data.List (intercalate)
 
 {-
   Этот скрипт получает большие целые числа которые делятся на
-  2/3/7/9/11...  и другие простые числа. Основание подбирается случайно
+  2,3,5,7,11,13,17,19,23,...  и другие простые числа. Основание подбирается случайно
   в диапазоне  указанном в константах
-  цель: получить большие случайные числа - кратные 2/3/7/9/11...
+  цель: получить большие случайные числа - кратные 2,3,5,7,11,13,17,19,23,...
 -}
 
 -- Тип для представления интервала (константа)
@@ -17,6 +17,7 @@ data RandomRange = RandomRange
     , randomMax :: Integer
     } deriving (Show, Eq)
 
+customRange :: RandomRange
 customRange = RandomRange 1000 9999  -- диапазон случайных значений
 
 -- в бинарном формате
@@ -44,10 +45,10 @@ loopFunction power1 = do
                     loopFunction power1  -- рекурсия пока не подберется нужное число
 
 -- напечатаем результат 
-printFunction :: Integer -> Integer -> IO ()
-printFunction power1 randomNumber = do 
+printFunction :: Integer -> Integer -> Integer -> IO ()
+printFunction i power1 randomNumber = do 
                let result = calcDivNumber power1 randomNumber
-               putStrLn $ "number ::" ++ show (result) ++ " binary :: " ++ binaryString result ++ " "
+               putStrLn $ "N:" ++ show(i) ++ "number ::" ++ show (result) ++ "; binary :: " ++ binaryString result ++ " "
                     
 main :: IO ()
 main = do
@@ -62,7 +63,7 @@ main = do
          then
           putStrLn $ "степень должна быть простым числом из списка и положительным числом!"
          else 
-          printFunction power1 randomNumber  -- игнорируем возвращаемое значение
+          printFunction i power1 randomNumber  -- игнорируем возвращаемое значение
          )[1..10]
     putStrLn "=== end ==="
    
