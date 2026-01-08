@@ -20,7 +20,6 @@ data RandomRange = RandomRange
 customRange :: RandomRange
 customRange = RandomRange 1000 9999  -- диапазон случайных значений
 
--- в бинарном формате
 getRandomMonad ::IO Integer
 getRandomMonad = evalRandIO $ getRandomR ((randomMin customRange), (randomMax customRange))
 
